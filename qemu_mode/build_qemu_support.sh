@@ -74,14 +74,27 @@ git status 1>/dev/null 2>/dev/null
 if [ $? -eq 0 ]; then
   echo "[*] initializing qemuafl submodule"
   git submodule init || exit 1
+  git add -A
+  git commit -a -m "init qemuafl submodule"
   git submodule update ./qemuafl 2>/dev/null # ignore errors
+  # delete qemuafl and clone it again
+  # rm -rf qemuafl
+  # echo "[*] cloning qemuafl"
+  # test -d qemuafl/.git || {
+  #   CNT=1
+  #   while [ '!' -d qemuafl/.git -a "$CNT" -lt 4 ]; do
+  #     echo "Trying to clone qemuafl (attempt $CNT/3)"
+  #     git clone --depth 1 https://github.com/MaksimFeng/qemuafl-dataflow qemuafl
+  #     CNT=`expr "$CNT" + 1`
+  #   done
+  # }
 else
   echo "[*] cloning qemuafl"
   test -d qemuafl/.git || {
     CNT=1
     while [ '!' -d qemuafl/.git -a "$CNT" -lt 4 ]; do
       echo "Trying to clone qemuafl (attempt $CNT/3)"
-      git clone --depth 1 https://github.com/AFLplusplus/qemuafl
+      git clone --depth 1 https://github.com/MaksimFeng/qemuafl-dataflow
       CNT=`expr "$CNT" + 1`
     done
   }
